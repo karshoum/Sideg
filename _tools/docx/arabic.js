@@ -1,4 +1,16 @@
 // أدوات مشتركة لبناء مستندات Word عربية (من اليمين إلى اليسار)
+//
+// ── قاعدة المحاذاة (مُختبَرة، لا تُخالف) ────────────────────────────────────
+// في فقرة عربية (bidirectional: true) تُفسَّر قيم w:jc على أنها نسبية
+// لاتجاه الفقرة لا للصفحة:
+//     START -> يمين الصفحة   (وهو المطلوب في العربية)
+//     END   -> يسار الصفحة
+//     RIGHT -> يسار الصفحة   (مفاجئ — لا تستخدمها)
+// ولهذا كل فقرة عربية هنا تستخدم START وليس RIGHT.
+//
+// وفي الفقرات الإنجليزية نتجنّب تعيين rightToLeft: false صراحةً،
+// لأن w:rtl val="false" يربك محاذاة بعض القارئات — نحذف الخاصية بدل تصفيرها.
+
 const {
   Paragraph, TextRun, Table, TableRow, TableCell, WidthType,
   AlignmentType, ShadingType, BorderStyle, HeadingLevel, LevelFormat,
@@ -7,7 +19,6 @@ const {
 const FONT = 'Arial';
 const FONT_EN = 'Consolas';
 
-// ألوان المستند
 const C = {
   title:   '1F3864',
   heading: 'C00000',
@@ -22,44 +33,49 @@ const C = {
 
 const CONTENT_WIDTH = 9000; // عرض المحتوى داخل هوامش A4 بوحدة DXA
 
+/** يبني خيارات TextRun — يحذف rightToLeft تماماً في النص الإنجليزي */
+function runOpts({ text, ltr, font, size, bold, italics, color }) {
+  const opts = {
+    text,
+    font: font || (ltr ? FONT_EN : FONT),
+    size: size || 24,
+  };
+  if (!ltr) opts.rightToLeft = true;
+  if (bold) opts.bold = true;
+  if (italics) opts.italics = true;
+  if (color) opts.color = color;
+  return opts;
+}
+
 /** فقرة عربية عادية */
 function ar(text, opts = {}) {
   return new Paragraph({
     bidirectional: true,
-    alignment: opts.alignment || AlignmentType.RIGHT,
+    alignment: opts.alignment || AlignmentType.START,
     spacing: { after: opts.after ?? 120, line: opts.line ?? 300 },
     indent: opts.indent,
-    children: [
-      new TextRun({
-        text,
-        rightToLeft: true,
-        font: FONT,
-        size: opts.size || 24,
-        bold: opts.bold || false,
-        italics: opts.italics || false,
-        color: opts.color,
-      }),
-    ],
+    children: [new TextRun(runOpts({ text, ...opts }))],
   });
 }
 
-/** فقرة مكوّنة من عدة أجزاء بتنسيقات مختلفة */
+/** فقرة عربية مكوّنة من عدة أجزاء بتنسيقات مختلفة */
 function arRuns(runs, opts = {}) {
   return new Paragraph({
     bidirectional: true,
-    alignment: opts.alignment || AlignmentType.RIGHT,
+    alignment: opts.alignment || AlignmentType.START,
     spacing: { after: opts.after ?? 120, line: opts.line ?? 300 },
-    children: runs.map((r) =>
-      new TextRun({
-        text: r.text,
-        rightToLeft: r.ltr ? false : true,
-        font: r.ltr ? FONT_EN : FONT,
-        size: r.size || opts.size || 24,
-        bold: r.bold || false,
-        italics: r.italics || false,
-        color: r.color,
-      })
-    ),
+    children: runs.map((r) => new TextRun(runOpts({ ...r, size: r.size || opts.size }))),
+  });
+}
+
+/** فقرة إنجليزية خالصة (من اليسار) */
+function enPara(text, opts = {}) {
+  return new Paragraph({
+    alignment: opts.alignment || AlignmentType.LEFT,
+    spacing: { after: opts.after ?? 120, line: opts.line ?? 280 },
+    shading: opts.fill ? { type: ShadingType.CLEAR, fill: opts.fill } : undefined,
+    indent: opts.indent,
+    children: [new TextRun(runOpts({ text, ltr: true, ...opts }))],
   });
 }
 
@@ -69,23 +85,19 @@ function docTitle(text) {
     bidirectional: true,
     alignment: AlignmentType.CENTER,
     spacing: { after: 120, line: 340 },
-    children: [
-      new TextRun({ text, rightToLeft: true, font: FONT, size: 40, bold: true, color: C.title }),
-    ],
+    children: [new TextRun(runOpts({ text, size: 40, bold: true, color: C.title }))],
   });
 }
 
-/** عنوان قسم رئيسي (يظهر في جدول المحتويات) */
+/** عنوان قسم رئيسي */
 function h1(text) {
   return new Paragraph({
     heading: HeadingLevel.HEADING_1,
     bidirectional: true,
-    alignment: AlignmentType.RIGHT,
+    alignment: AlignmentType.START,
     spacing: { before: 360, after: 160 },
     border: { bottom: { style: BorderStyle.SINGLE, size: 8, color: C.heading, space: 4 } },
-    children: [
-      new TextRun({ text, rightToLeft: true, font: FONT, size: 30, bold: true, color: C.heading }),
-    ],
+    children: [new TextRun(runOpts({ text, size: 30, bold: true, color: C.heading }))],
   });
 }
 
@@ -94,31 +106,20 @@ function h2(text) {
   return new Paragraph({
     heading: HeadingLevel.HEADING_2,
     bidirectional: true,
-    alignment: AlignmentType.RIGHT,
+    alignment: AlignmentType.START,
     spacing: { before: 240, after: 120 },
-    children: [
-      new TextRun({ text, rightToLeft: true, font: FONT, size: 26, bold: true, color: C.sub }),
-    ],
+    children: [new TextRun(runOpts({ text, size: 26, bold: true, color: C.sub }))],
   });
 }
 
-/** عنصر قائمة نقطية */
+/** عنصر قائمة نقطية عربية */
 function bullet(text, opts = {}) {
   return new Paragraph({
     numbering: { reference: 'ar-bullets', level: 0 },
     bidirectional: true,
-    alignment: AlignmentType.RIGHT,
+    alignment: AlignmentType.START,
     spacing: { after: 60, line: 300 },
-    children: [
-      new TextRun({
-        text,
-        rightToLeft: true,
-        font: FONT,
-        size: opts.size || 24,
-        bold: opts.bold || false,
-        color: opts.color,
-      }),
-    ],
+    children: [new TextRun(runOpts({ text, ...opts }))],
   });
 }
 
@@ -129,48 +130,40 @@ function code(text) {
     spacing: { after: 0, line: 260 },
     shading: { type: ShadingType.CLEAR, fill: C.codeBg },
     indent: { left: 240, right: 240 },
-    children: [new TextRun({ text, font: FONT_EN, size: 20, color: '1A1A1A' })],
+    children: [new TextRun(runOpts({ text, ltr: true, size: 20, color: '1A1A1A' }))],
   });
 }
 
-/** فقرة فارغة صغيرة */
 function gap(after = 120) {
   return new Paragraph({ spacing: { after }, children: [] });
 }
 
 /** خلية جدول */
 function cell(text, width, opts = {}) {
+  const ltr = !!opts.ltr;
+  const alignment = opts.align || (ltr ? AlignmentType.LEFT : AlignmentType.START);
+
   return new TableCell({
     width: { size: width, type: WidthType.DXA },
     shading: opts.fill ? { type: ShadingType.CLEAR, fill: opts.fill } : undefined,
     margins: { top: 80, bottom: 80, left: 120, right: 120 },
     children: [
       new Paragraph({
-        bidirectional: !opts.ltr,
-        alignment: opts.align || (opts.ltr ? AlignmentType.LEFT : AlignmentType.RIGHT),
+        bidirectional: !ltr,
+        alignment,
         spacing: { after: 0, line: 260 },
         children: [
-          new TextRun({
-            text: String(text),
-            rightToLeft: !opts.ltr,
-            font: opts.ltr ? FONT_EN : FONT,
-            size: opts.size || 22,
-            bold: opts.bold || false,
-            color: opts.color,
-          }),
+          new TextRun(runOpts({
+            text: String(text), ltr, size: opts.size || 22,
+            bold: opts.bold, color: opts.color,
+          })),
         ],
       }),
     ],
   });
 }
 
-/**
- * جدول عربي.
- * @param {string[]} headers  عناوين الأعمدة (من اليمين لليسار بصرياً)
- * @param {Array[]} rows      الصفوف
- * @param {number[]} widths   عرض كل عمود بوحدة DXA، مجموعها = CONTENT_WIDTH
- * @param {object} opts       { ltrCols: [أرقام الأعمدة التي محتواها إنجليزي] }
- */
+/** جدول عربي */
 function table(headers, rows, widths, opts = {}) {
   const ltrCols = new Set(opts.ltrCols || []);
 
@@ -201,7 +194,6 @@ function table(headers, rows, widths, opts = {}) {
   });
 }
 
-/** إعداد القوائم النقطية — يُمرّر إلى Document */
 const numbering = {
   config: [
     {
@@ -211,7 +203,7 @@ const numbering = {
           level: 0,
           format: LevelFormat.BULLET,
           text: '•',
-          alignment: AlignmentType.RIGHT,
+          alignment: AlignmentType.START,
           style: { paragraph: { indent: { right: 460, hanging: 260 } } },
         },
       ],
@@ -219,22 +211,15 @@ const numbering = {
   ],
 };
 
-/** الأنماط الافتراضية — يُمرّر إلى Document */
 const styles = {
-  default: {
-    document: { run: { font: FONT, size: 24 } },
-  },
+  default: { document: { run: { font: FONT, size: 24 } } },
 };
 
-/** إعدادات الصفحة A4 من اليمين لليسار */
 const pageSetup = {
-  page: {
-    margin: { top: 1134, right: 1134, bottom: 1134, left: 1134 },
-  },
-  bidi: true,
+  page: { margin: { top: 1134, right: 1134, bottom: 1134, left: 1134 } },
 };
 
 module.exports = {
-  ar, arRuns, docTitle, h1, h2, bullet, code, gap, cell, table,
+  ar, arRuns, enPara, docTitle, h1, h2, bullet, code, gap, cell, table, runOpts,
   numbering, styles, pageSetup, C, FONT, FONT_EN, CONTENT_WIDTH,
 };

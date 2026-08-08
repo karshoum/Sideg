@@ -409,7 +409,7 @@ const doc = new Document({
           children: [
             new Paragraph({
               bidirectional: true,
-              alignment: AlignmentType.RIGHT,
+              alignment: AlignmentType.START,
               border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BFBFBF', space: 4 } },
               children: [
                 new TextRun({

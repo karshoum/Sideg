@@ -14,7 +14,7 @@ const children = [];
 function quote(text) {
   return new Paragraph({
     bidirectional: true,
-    alignment: AlignmentType.RIGHT,
+    alignment: AlignmentType.START,
     spacing: { before: 120, after: 160, line: 320 },
     indent: { right: 300, left: 300 },
     shading: { type: ShadingType.CLEAR, fill: 'F2F6FA' },
@@ -404,7 +404,7 @@ const doc = new Document({
           children: [
             new Paragraph({
               bidirectional: true,
-              alignment: AlignmentType.RIGHT,
+              alignment: AlignmentType.START,
               border: { bottom: { style: BorderStyle.SINGLE, size: 4, color: 'BFBFBF', space: 4 } },
               children: [
                 new TextRun({

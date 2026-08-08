@@ -6,8 +6,10 @@
 المشاريع المتوفرة حاليا:
 
   1) tensorflow-lab      معمل TensorFlow - اعداد بيئة tf_env واول شبكة عصبية
-  2) house-price-ann     توقع اسعار المنازل بشبكة عصبية (تقرير Word جاهز)
-  3) seminar-11-agents   سيمنار: من النماذج اللغوية الى الوكلاء (ملف Word جاهز)
+  2) house-price-ann     توقع اسعار المنازل بشبكة عصبية
+  3) seminar-11-agents   سيمنار: من النماذج اللغوية الى الوكلاء
+
+لكل مشروع ملفا Word جاهزان:  submission.docx  للتسليم،  explanation.docx  للشرح.
 
 كل مشروع في مجلد مستقل داخل  projects  وله ملف README.md خاص به.
 
@@ -39,8 +41,9 @@
 2) توقع اسعار المنازل  (house-price-ann)
 --------------------------------------------------------------------
 
-  * التقرير الكامل جاهز في الملف:   projects\house-price-ann\report.docx
-    افتحه بالنقر المزدوج (يفتح في Word او WPS) - لا يحتاج اي تثبيت.
+  * ملف التسليم:   projects\house-price-ann\submission.docx
+  * ملف الشرح  :   projects\house-price-ann\explanation.docx
+    افتحهما بالنقر المزدوج (يفتحان في Word او WPS) - لا يحتاجان اي تثبيت.
 
   * لتشغيل الكود نفسه، من Anaconda Prompt:
         conda activate tf_env
@@ -52,8 +55,9 @@
 3) سيمنار: من النماذج اللغوية الى الوكلاء  (seminar-11-agents)
 --------------------------------------------------------------------
 
-  * ملف السيمنار الكامل جاهز في:   projects\seminar-11-agents\seminar.docx
-    افتحه بالنقر المزدوج - لا يحتاج اي تثبيت.
+  * ملف التسليم:   projects\seminar-11-agents\submission.docx
+  * ملف الشرح  :   projects\seminar-11-agents\explanation.docx
+    افتحهما بالنقر المزدوج - لا يحتاجان اي تثبيت.
 
   * الامثلة البرمجية الثلاثة تعمل بلا انترنت وبلا اي مكتبة اضافية:
         cd projects\seminar-11-agents

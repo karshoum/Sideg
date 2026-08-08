@@ -62,13 +62,18 @@ Sideg/
     │   └── ...
     ├── house-price-ann/   ← مشروع مستقل
     │   ├── README.md
-    │   ├── report.docx
+    │   ├── submission.docx    ← ملف التسليم
+    │   ├── explanation.docx   ← ملف الشرح
     │   └── ...
     └── seminar-11-agents/ ← مشروع مستقل
         ├── README.md
-        ├── seminar.docx
+        ├── submission.docx    ← ملف التسليم
+        ├── explanation.docx   ← ملف الشرح
         └── ...
 ```
+
+> كل مشروع فيه **ملفا Word**: `submission.docx` للتسليم بالبنية المطلوبة تماماً،
+> و `explanation.docx` يشرح كل قرار وراء المشروع.
 
 > مجلد `_tools/` **اختياري تماماً** — ملفات Word داخل المشاريع جاهزة وتُفتح مباشرة،
 > ولا تحتاج هذه الأدوات إلا إن أردت إعادة توليدها برمجياً.

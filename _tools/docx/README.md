@@ -14,11 +14,16 @@
 
 ```
 _tools/docx/
-├── README.md                ← هذا الملف
-├── arabic.js                ← أدوات مشتركة لبناء مستندات عربية (RTL)
-├── build_house_report.js    ← يولّد projects/house-price-ann/report.docx
-└── build_seminar.js         ← يولّد projects/seminar-11-agents/seminar.docx
+├── README.md                    ← هذا الملف
+├── arabic.js                    ← أدوات ملفات الشرح (تنسيق كامل: عناوين، جداول، ترويسة)
+├── submission_lib.js            ← أدوات ملفات التسليم (تنسيق مبسّط مطابق للأصل)
+├── build_house_report.js        ← يولّد house-price-ann/explanation.docx
+├── build_house_submission.js    ← يولّد house-price-ann/submission.docx
+├── build_seminar.js             ← يولّد seminar-11-agents/explanation.docx
+└── build_seminar_submission.js  ← يولّد seminar-11-agents/submission.docx
 ```
+
+لكل مشروع ملفان: **`submission.docx`** للتسليم و **`explanation.docx`** للشرح.
 
 ---
 
@@ -29,8 +34,11 @@ _tools/docx/
 ```bash
 cd _tools/docx
 npm install docx
-node build_house_report.js ../../projects/house-price-ann/report.docx
-node build_seminar.js      ../../projects/seminar-11-agents/seminar.docx
+
+node build_house_report.js       ../../projects/house-price-ann/explanation.docx
+node build_house_submission.js   ../../projects/house-price-ann/submission.docx
+node build_seminar.js            ../../projects/seminar-11-agents/explanation.docx
+node build_seminar_submission.js ../../projects/seminar-11-agents/submission.docx
 ```
 
 ---
@@ -49,9 +57,25 @@ node build_seminar.js      ../../projects/seminar-11-agents/seminar.docx
 
 | العنصر | الإعداد المطلوب |
 |---|---|
-| الفقرة | `bidirectional: true` مع `alignment: RIGHT` |
+| الفقرة | `bidirectional: true` مع `alignment: START` |
 | النص | `rightToLeft: true` |
 | الجدول | `visuallyRightToLeft: true` |
+
+### مصيدتان تستحقان الانتباه
+
+**١) `START` وليس `RIGHT`.** داخل فقرة عربية تُفسَّر قيم المحاذاة على أنها نسبية
+لاتجاه الفقرة لا لاتجاه الصفحة، فتنقلب النتيجة عكس المتوقع:
+
+| القيمة | أين يظهر النص فعلياً |
+|---|---|
+| `START` | يمين الصفحة ✅ وهو المطلوب |
+| `END` | يسار الصفحة |
+| `RIGHT` | **يسار** الصفحة ⚠️ عكس ما يوحي به الاسم |
+
+**٢) لا تكتب `rightToLeft: false`.** في النص الإنجليزي احذف الخاصية تماماً بدل
+تصفيرها، لأن `w:rtl w:val="false"` الصريح يربك محاذاة بعض القارئات فيقفز النص
+إلى الجهة الخطأ. ولهذا تبني الدالة `runOpts` في الملفين خيارات النص بحذف الخاصية
+لا بتصفيرها.
 
 ولإجبار جزء إنجليزي أو رقمي على العرض من اليسار لليمين داخل جملة عربية
 (مثل `3 → 8 → 4 → 1`)، يُحاط الجزء بالرمزين غير المرئيين `U+202A` و `U+202C`.
