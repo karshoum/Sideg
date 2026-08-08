@@ -18,15 +18,20 @@
 
 ### على Windows
 
+> **أولاً: احصل على المجلد.** إما بفك ضغط الحزمة التي وصلتك،
+> أو بتنزيل المستودع كـ ZIP من زر **Code ← Download ZIP** في صفحة GitHub،
+> أو `git clone https://github.com/karshoum/Sideg.git` إن كان `git` مثبتاً لديك.
+> النتيجة واحدة في كل الحالات: مجلد اسمه `tensorflow-lab` يحتوي على هذه الملفات.
+
+### على Windows
+
 1. افتح **Anaconda Prompt** من قائمة ابدأ (Start Menu).
    > ⚠️ لا تستخدم CMD أو PowerShell العادي — لن يتعرّفا على أمر `conda`.
-2. انزل المشروع وانتقل إلى مجلده:
+2. انتقل إلى مجلد المشروع. أسهل طريقة: اكتب `cd` ومسافة، ثم **اسحب المجلد
+   بالفأرة وأفلته داخل نافذة الأوامر** فيُكتب المسار تلقائياً، ثم اضغط Enter.
    ```
-   git clone https://github.com/karshoum/Sideg.git
-   cd Sideg\projects\tensorflow-lab
+   cd C:\Users\<اسمك>\Downloads\Sideg\projects\tensorflow-lab
    ```
-   > إن لم يكن `git` مثبتاً لديك، حمّل المستودع كملف ZIP من زر **Code ← Download ZIP**
-   > في صفحة GitHub، ثم فك الضغط وانتقل إلى المجلد `Sideg\projects\tensorflow-lab`.
 3. شغّل ملف الإعداد:
    ```
    setup_windows.bat
@@ -39,11 +44,10 @@
 
 ### على macOS أو Linux
 
-افتح **Terminal** ثم:
+افتح **Terminal** ثم انتقل إلى مجلد المشروع وشغّل الإعداد:
 
 ```bash
-git clone https://github.com/karshoum/Sideg.git
-cd Sideg/projects/tensorflow-lab
+cd ~/Downloads/Sideg/projects/tensorflow-lab
 bash setup_unix.sh
 ```
 

@@ -12,3 +12,6 @@
 
 # لا تعبث بمحتوى الـ notebooks
 *.ipynb -text
+
+# ملف البداية موجّه لقارئ ويندوز: احتفظ بـ CRLF ولا تعبث بالـ BOM
+START_HERE.txt -text
