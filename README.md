@@ -13,6 +13,8 @@
 | المشروع | الوصف | اللغة/التقنية |
 |---|---|---|
 | [`tensorflow-lab`](projects/tensorflow-lab/) | إعداد بيئة `tf_env` وبناء أول شبكة عصبية اصطناعية للتصنيف الثنائي — حزمة معمل جاهزة للتشغيل على Windows وmacOS وLinux | Python · TensorFlow · Jupyter |
+| [`house-price-ann`](projects/house-price-ann/) | توقّع أسعار المنازل بشبكة عصبية اصطناعية — مسألة انحدار بثلاث مدخلات، مع تقرير Word كامل | Python · TensorFlow · scikit-learn |
+| [`seminar-11-agents`](projects/seminar-11-agents/) | السيمنار الحادي عشر: من النماذج اللغوية إلى الوكلاء الأذكياء — ملف Word وثلاثة أمثلة برمجية | Python · مادة علمية |
 
 > كلما أُضيف مشروع جديد يُضاف سطر له في هذا الجدول.
 
@@ -52,11 +54,24 @@ Sideg/
 ├── .gitattributes         ← ضبط نهايات الأسطر لكل نظام تشغيل
 ├── _template/             ← قالب لبدء مشروع جديد
 │   └── README.md
+├── _tools/                ← أدوات مساعدة (اختيارية، ليست مشروعاً)
+│   └── docx/              ← سكربتات توليد ملفات Word العربية
 └── projects/
-    └── tensorflow-lab/    ← مشروع مستقل
+    ├── tensorflow-lab/    ← مشروع مستقل
+    │   ├── README.md
+    │   └── ...
+    ├── house-price-ann/   ← مشروع مستقل
+    │   ├── README.md
+    │   ├── report.docx
+    │   └── ...
+    └── seminar-11-agents/ ← مشروع مستقل
         ├── README.md
+        ├── seminar.docx
         └── ...
 ```
+
+> مجلد `_tools/` **اختياري تماماً** — ملفات Word داخل المشاريع جاهزة وتُفتح مباشرة،
+> ولا تحتاج هذه الأدوات إلا إن أردت إعادة توليدها برمجياً.
 
 ---
 

@@ -10,8 +10,16 @@
 *.yml text eol=lf
 *.txt text eol=lf
 
+*.js   text eol=lf
+
 # لا تعبث بمحتوى الـ notebooks
 *.ipynb -text
+
+# ملفات Office ثنائية — أي تحويل لنهايات الأسطر يُتلفها
+*.docx binary
+*.xlsx binary
+*.pptx binary
+*.pdf  binary
 
 # ملف البداية موجّه لقارئ ويندوز: احتفظ بـ CRLF ولا تعبث بالـ BOM
 START_HERE.txt -text
