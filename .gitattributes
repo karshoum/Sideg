@@ -1,0 +1,14 @@
+# حافظ على نهايات الأسطر الصحيحة لكل نظام تشغيل
+# Windows batch files must keep CRLF or `goto` labels can misbehave.
+*.bat text eol=crlf
+
+# Unix shell scripts must keep LF or bash fails with "bad interpreter".
+*.sh  text eol=lf
+
+*.py  text eol=lf
+*.md  text eol=lf
+*.yml text eol=lf
+*.txt text eol=lf
+
+# لا تعبث بمحتوى الـ notebooks
+*.ipynb -text

@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# نماذج محفوظة ومخرجات التدريب
+*.keras
+*.h5
+saved_model/
+logs/
+
+# ملفات النظام
+.DS_Store
+Thumbs.db
+
+# محررات
+.vscode/
+.idea/
