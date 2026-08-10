@@ -13,6 +13,7 @@
 | المشروع | الوصف | اللغة/التقنية |
 |---|---|---|
 | [`tensorflow-lab`](projects/tensorflow-lab/) | إعداد بيئة `tf_env` وبناء أول شبكة عصبية اصطناعية للتصنيف الثنائي — حزمة معمل جاهزة للتشغيل على Windows وmacOS وLinux | Python · TensorFlow · Jupyter |
+| [`keyvalue-library-db`](projects/keyvalue-library-db/) | قاعدة بيانات مفتاح-قيمة (Key-Value) لمكتبة كتب: تخزين وجلب وتعديل وإحصائيات — بدون أي مكتبات خارجية | Python |
 
 > كلما أُضيف مشروع جديد يُضاف سطر له في هذا الجدول.
 
